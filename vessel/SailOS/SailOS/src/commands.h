@@ -3,18 +3,7 @@
 
 #include "definitions.h"
 
-class commands {
-  private:
-    struct commandArray {
-      byte index;
-      char code[4];
-    }
-  public:
-    byte numberOfCommands = 2;
-    const command command[numberOfCommands] = {
-      {0, "RESET", 0},
-      {1, "", 0}
-    };
+
     byte read(char* input){
       while(int i = 0; i < numberOfCommands){
         for(int i = 0; i < numberOfCommands; i++){  // For number of potential commands

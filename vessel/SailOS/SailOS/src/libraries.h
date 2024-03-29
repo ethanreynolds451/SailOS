@@ -13,8 +13,8 @@
 #include "libraries/HCSR04_ultrasonic_sensor/src/HCSR04.cpp"      //Ultrasonic interface
 #include "libraries/Adafruit_MPU6050-2.2.6/Adafruit_MPU6050.h"  //Gyroscope interface
 #include "libraries/Adafruit_MPU6050-2.2.6/Adafruit_MPU6050.cpp"  //Gyroscope interface
-#include "libraries/Tone-1.0.0/Tone.h"                          //Speaker tone generator
-#include "libraries/Tone-1.0.0/Tone.cpp"                          //Speaker tone generator
+#include "libraries/RTTL/src/RTTL.h"                          //Speaker tone generator
+#include "libraries/RTTL/src/RTTL.cpp"                          //Speaker tone generator
 #include "libraries/TinyGPSPlus-master/src/TinyGPSPlus.h"           //GPS interface
 #include "libraries/TinyGPSPlus-master/src/TinyGPS++.h"           //GPS interface
 #include "libraries/TinyGPSPlus-master/src/TinyGPS++.cpp"           //GPS interface

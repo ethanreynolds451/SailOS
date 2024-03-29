@@ -1,7 +1,7 @@
 #ifndef DEFINITIONS_h
 #define DEFINITIONS_h
 
-void(* resetFunc) (void) = 0; // Create function to perform software reset
+void(* resetFunc) (void) = 0;       // Create function to perform software reset
 
 #include "libraries.h"
 
@@ -32,11 +32,39 @@ class Address {
         static constexpr int pcf = 0x20;      // Default address
 };
 
+class Error {
+  private:
+    struct errorArray {
+      uint8_t errorNumber;
+      char errorCode[4];
+      char errorTone[16];
+    };
+  public:
+    const errorArray error[16] = {
+     {0, "NONE", ""},
+     {1, "SEND", "d=4,o=6,b=127:f,c#,f,c#"}
+    };
+};
+
+class commands {
+  private:
+    struct commandArray {
+      byte index;
+      char code[4];
+    }
+  public:
+    byte numberOfCommands = 2;
+    const command command[numberOfCommands] = {
+      {0, "RESET", 0},
+      {1, "", 0}
+    };
+};
+
 File activeFile;                      //  Create file object for SD read / write
 REYAX radio(Pin::radioRx, Pin::radioTx);      //  Create radio object on radio pins
 SoftwareSerial gps(Pin::gpsRx, Pin::gpsTx);   //  Create software serial object for GPS
 PWMServo rudder;                      //  Create servo object for rudder control
-Tone sound;                           //  Create tone object for speaker
+RTTL sound;                           //  Create RTTL object for speaker
 Adafruit_MPU6050 mpu1;                //  Create MPU object for gyro / accel
 Adafruit_MPU6050 mpu2;                //  Create MPU object for gyro / accel
 QMC5883LCompass compass;              //  Create compas object

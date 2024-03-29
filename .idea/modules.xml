@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/SailUI.iml" filepath="$PROJECT_DIR$/.idea/SailUI.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/SailOS.iml" filepath="$PROJECT_DIR$/.idea/SailOS.iml" />
     </modules>
   </component>
 </project>
