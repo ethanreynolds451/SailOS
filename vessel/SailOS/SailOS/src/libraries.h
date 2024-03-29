@@ -3,10 +3,12 @@
 
 #include <SoftwareSerial.h>   //Virtual serial port
 #include <SPI.h>              //Serial peripheral interface
-#include <SD.h>               //SD card interface    
 #include <Wire.h>             //Communication
-#include "libraries/PWMServo-2.1.0/PWMServo.h"            //Servo control
-#include "libraries/PWMServo-2.1.0/PWMServo.cpp"            //Servo control
+#include "libraries/SD-1.2.4/src/SD.h"                          //SD card interface
+#include "libraries/SD-1.2.4/src/SD.cpp"                        //SD card interface
+#include "libraries/SD-1.2.4/src/File.cpp"                      //SD card interface
+#include "libraries/PWMServo-2.1.0/PWMServo.h"                  //Servo control
+#include "libraries/PWMServo-2.1.0/PWMServo.cpp"                //Servo control
 #include "libraries/HCSR04_ultrasonic_sensor/src/HCSR04.h"      //Ultrasonic interface
 #include "libraries/HCSR04_ultrasonic_sensor/src/HCSR04.cpp"      //Ultrasonic interface
 #include "libraries/Adafruit_MPU6050-2.2.6/Adafruit_MPU6050.h"  //Gyroscope interface
