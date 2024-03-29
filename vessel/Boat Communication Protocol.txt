@@ -1,0 +1,12 @@
+Based on principles behind MAVLink protocol
+
+
+Boat transmits system data at specified intervals
+
+Every time the program cycles, it checks for a new command
+
+- Each command will start with a *
+- The command will have a one-leter code asociated with it
+
+
+
