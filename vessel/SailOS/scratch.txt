@@ -1,18 +1,6 @@
-/*   
- *  Header file for SailOS Arduino Library
- *  Written by: Ethan Reynolds
- *  Sound School 2024
-*/
+Old Code
 
-#ifndef SAILOS_h
-#define SAILOS_h
-
-
-#include "definitions.h"
-
-
-class Boat {
-  public:
+ public:
     Boat();
     void begin();
     void connect();
@@ -22,7 +10,7 @@ class Boat {
 //    void setManualControl();
 //    void setAutonomousMode();
 //    void sendMode();
-  private: 
+  private:
     char[128] dataIn = "";  //  Create buffer to hold incoming data
     bool autoMode = false;
     struct peripheral_status {
@@ -30,13 +18,13 @@ class Boat {
       bool MPU_1_active = false;
       bool MPU_2_active = false;
       bool QMC_active = false;
-      bool PCF_active = false; 
+      bool PCF_active = false;
       bool GPS_active = false;
       bool DTH_active = false;
       bool HCS_active = false;
     };
-    peripheral_conditions p_status;  
-      
+    peripheral_conditions p_status;
+
 //    void initiatePeripherals(){
 //      initiateSD();
 //      initiateMPU();
@@ -46,32 +34,32 @@ class Boat {
 //      initiateDTH();
 //      initiateHCS();
 //    }
-//    
+//
 //    //Try to initate 3 times with 1 second rest. Set active to sucess state
-//    void initiateSD(){              
+//    void initiateSD(){
 //      for(int i = 0; i < 3; i++){
 //        if (!SD.begin()) {
 //          if(i < 2) {
 //            delay(100);
 //          } else {
-//            pc.SD_active = false;          
+//            pc.SD_active = false;
 //          }
 //        } else {
 //          pc.SD_active = true;
 //          i = 3;
 //        }
 //      }
-//    } 
+//    }
 //    void initiateMPU(){
 //      for(int i = 0; i < 3; i++){
 //        if (!mpu1.begin(MPU_1_address)) {
 //            if(i < 2) {
 //              delay(100);
 //            } else {
-//              pc.MPU_1_active = false; 
+//              pc.MPU_1_active = false;
 //            }
 //          } else {
-//            pc.MPU_1_active = true; 
+//            pc.MPU_1_active = true;
 //          }
 //          if (!mpu2.begin(MPU_2_address)) {
 //            if(i < 2) {
@@ -84,7 +72,7 @@ class Boat {
 //          }
 //      }
 //    }
-//    void initiateQMC(){ 
+//    void initiateQMC(){
 //      compass.init();
 //      for(int i = 0; i < 3; i++){
 //        if (compass.getX() == -1) {
@@ -92,10 +80,10 @@ class Boat {
 //              compass.init();
 //              delay(100);
 //            } else {
-//              pc.QMC_active = false; 
+//              pc.QMC_active = false;
 //            }
 //          } else {
-//            pc.QMC_active  = true; 
+//            pc.QMC_active  = true;
 //            compass.setADDR(QMC_address);
 //          }
 //        }
@@ -108,21 +96,21 @@ class Boat {
 //              pcf.begin();
 //              delay(100);
 //            } else {
-//              pc.PCF_active = false; 
+//              pc.PCF_active = false;
 //            }
 //          } else {
-//            pc.PCF_active  = true; 
+//            pc.PCF_active  = true;
 //         }
 //       }
 //    }
 //    void initiateGPS(){
-//      
+//
 //    }
 //    void initiateDTH(){
-//      
+//
 //    }
 //    void initiateHCS(){
-//      
+//
 //    }
 //
 //    void sendStatus(){
@@ -135,7 +123,7 @@ class Boat {
 //        _transmit("STATUS:QMC=");
 //        _transmitln(String(pc.QMC_active));
 //        _transmit("STATUS:PCF=");
-//        _transmitln(String(pc.PCF_active)); 
+//        _transmitln(String(pc.PCF_active));
 //        _transmit("STATUS:GPS=");
 //        _transmitln(String(pc.GPS_active));
 //        _transmit("STATUS:DTH=");
@@ -146,11 +134,11 @@ class Boat {
 //
 //    void _transmit(String data){
 //      Serial.print("AT+SEND=1,");
-//      Serial.print(String(data.length())); 
+//      Serial.print(String(data.length()));
 //      Serial.print(",");
-//      Serial.println(data);  
+//      Serial.println(data);
 //    }
-//    
+//
 //    String _readCommand(){
 //      String data = Serial.readStringUntil("\n");
 //      data = data.substring(-1, data.indexOf(',', -1));
@@ -158,4 +146,61 @@ class Boat {
 //    }
 //};
 
-#endif
+
+
+
+// Check for connection signal every one second
+void Boat::connect(){
+  while(true){                    // Repeat until command recieved
+    if(radio.available() > 0){    // Check if the radio has recieved a transmission
+      if(strncmp(radio.readData, "START", 5) == false)   // If there is data, check if it the start command
+        radio.send("START");      // If so, send a start response
+        if(! radio.waitSent()){   // Wait for radio to send
+                                  // If there is an error, sound error tone
+      }
+    }
+    delay(1000);
+  }
+}
+
+
+
+//void Boat::transmit(String data){
+//  _transmit(data);
+//}
+//
+//
+//String Boat::getCommand(){
+//  String command = _readCommand();
+//  return command;
+//}
+//
+//void Boat::connect(){
+//  monitorPrintln("Waiting...");
+//  while(true){
+//      if(_readCommand() == "READY"){
+//        _transmit("READY");
+//        monitorPrintln("Recieved Signal");
+//        for(int i = 0; i < 10; i++){
+//          if(_readCommand() == "START"){
+//            _transmit("ACTIVE");
+//            break;
+//          }
+//          delay(500);
+//        }
+//      }
+//   }
+//}
+//
+//void Boat::setManualControl(){
+//  autoMode = false;
+//}
+//
+//void Boat::setAutonomousMode(){
+//  autoMode = true;
+//}
+//
+//void Boat::sendMode(){
+//  Serial.print("MODE=");
+//  Serial.println(autoMode);
+//}

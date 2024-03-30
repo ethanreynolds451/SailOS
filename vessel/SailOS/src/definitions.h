@@ -32,6 +32,11 @@ class Address {
         static constexpr int pcf = 0x20;      // Default address
 };
 
+class Default {
+  public:
+    static const int baud = 9600;
+};
+
 class Error {
   private:
     struct errorArray {
@@ -51,12 +56,12 @@ class commands {
     struct commandArray {
       byte index;
       char code[4];
-    }
+    };
   public:
-    byte numberOfCommands = 2;
-    const command command[numberOfCommands] = {
-      {0, "RESET", 0},
-      {1, "", 0}
+    static const byte numberOfCommands = 2;
+    const commandArray command[numberOfCommands] = {
+      {0, "RESET"},
+      {1, ""}
     };
 };
 
@@ -64,7 +69,7 @@ File activeFile;                      //  Create file object for SD read / write
 REYAX radio(Pin::radioRx, Pin::radioTx);      //  Create radio object on radio pins
 SoftwareSerial gps(Pin::gpsRx, Pin::gpsTx);   //  Create software serial object for GPS
 PWMServo rudder;                      //  Create servo object for rudder control
-RTTL sound;                           //  Create RTTL object for speaker
+RTTL sound(Pin::speaker);                           //  Create RTTL object for speaker
 Adafruit_MPU6050 mpu1;                //  Create MPU object for gyro / accel
 Adafruit_MPU6050 mpu2;                //  Create MPU object for gyro / accel
 QMC5883LCompass compass;              //  Create compas object
