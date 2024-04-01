@@ -1,0 +1,14 @@
+{
+  "commands": [
+    {
+      "name": "reset",
+      "code": "RESET",
+      "index": 0
+    },
+    {
+      "name": "start",
+      "code": "START",
+      "index": 1
+    }
+  ]
+}

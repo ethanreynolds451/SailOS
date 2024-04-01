@@ -1,7 +1,6 @@
-#include "src/SailOS.h"
-#include "src/SailOS.cpp"
+#include "SailOS.h"
 
-Boat boat;
+//Boat boat;
 
 void setup(){
   
