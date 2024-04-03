@@ -5,7 +5,6 @@ Boat::Boat(){
 }
 
 void Boat::begin(int baud){
-  Serial.begin(9600);
   radio.begin(baud);             //This is of type REYAX, so REYAX functions should be called on it
 }
 
@@ -17,10 +16,9 @@ void Boat::update(){
         }
     }
     if (two.passed()) {              // Do every two seconds
+
     }
     if (three.passed()) {            // Do every three seconds
-        radio.send("Hi");
-        radio.waitSent();
     }
     if (five.passed()) {             // Do every five seconds
     }
@@ -28,15 +26,13 @@ void Boat::update(){
     }
     // Execute on every loop cycle
     command.read();                // Check for new command and execute if recieved
-
 }
 
 void Boat::read_data(){
-    radio.dataAdd(Default::data_header);
+    radio.dataAdd(data_header);
 }
 
 void Boat::broadcast_data(){
     read_data();
     radio.dataSend();
-    radio.waitSent();
 }

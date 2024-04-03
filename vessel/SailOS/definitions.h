@@ -35,11 +35,13 @@ class Address {
 class Default {
   public:
     static constexpr int baud = 9600;
-    static constexpr char data_header[4] = "DT:";
+    static constexpr byte rudder_center = 90;
 };
+Default def;
 
+static constexpr char data_header[4] = "DT:";
 static constexpr char command_header[4] = "CM:";
-static constexpr char control_header[4] = "CX";
+static constexpr char control_header[4] = "CX:";
 
 //File activeFile;                                //  Create file object for SD read / write
 REYAX radio(Pin::radioTx, Pin::radioRx);        //  Create radio object on radio pins
@@ -50,6 +52,12 @@ Adafruit_MPU6050 mpu1;                          //  Create MPU object for gyro /
 Adafruit_MPU6050 mpu2;                          //  Create MPU object for gyro / accel
 QMC5883LCompass compass;                        //  Create compas object
 PCF8575 pcf(Address::pcf);                      //  Create PCF expansion board object
+
+class Flag {
+    public:
+        bool broadcast_data = false;          // Start up listening for start signal
+};
+Flag flag;
 
 class Error {
   private:
@@ -69,10 +77,38 @@ class Error {
 class Data {
     private:
     public:
-        char start[6] = "START";
-
+        const char start[6] = "START";
+        const char response[5] = "RESP";
 };
 Data data;
+
+class Control {
+    public:
+      void set (char* data) {
+        if (byte index = data.find(Header::rudder); index != -1) {
+            // data.find(substring) returnst index of first ocurrence
+            // data.substr(start, length);
+        } else {
+            rudder = def.rudder_center;
+        }
+      }
+    private:
+      class Header {
+        public:
+            static const char rudder = 'S';     // 0 - 180
+            static const char thruster = 'M';   // F, R, X
+            static const char trim = 'T';       // I, O, D, X
+
+      };
+      byte rudder = def.rudder_center;
+      bool thruster_active = false;
+      bool thruster_reverse = false;
+      bool trim_active = false;
+      bool trim_reversed = false;
+      bool engage_active = false;
+      bool engage_reverse = false;
+};
+Control control;
 
 // This class manages everything related to incoming transmissions
 class Command {
@@ -81,38 +117,36 @@ class Command {
       void read(){
         if(radio.available() > 0){        // Check to see if there is any incoming data
             radio.readData(incoming, incoming_buffer_length);
-            Serial.print("Recieved Transmission: ");
             if (is_control(incoming)){
                 strip_header(incoming, control_header);
-                Serial.println("Control Data");
+                control.set(incoming);
             } else if (is_command(incoming)){
-                Serial.print("Command: ");
                 strip_header(incoming, command_header);
                 execute(incoming);
             } else {
-                Serial.println("Unrecognized");
+
             }
         }
-      }
-      void parse_control_data (){
       }
       void execute(char* code){
         if(strcmp(code, none) == 0){
 
         } else if(strcmp(code, reset) == 0){
             resetFunc();
+        } else if(strcmp(code, get_response) == 0){
+            radio.send(data.response);
         } else if(strcmp(code, start) == 0){
-            Serial.println("Start Command");
+            flag.broadcast_data = true;
             radio.send(data.start);
         } else {
-            Serial.println("Command Not Recognized");
+
         }
       }
     private:
-      char none[8] = "NONE";
-      char recieve_error[8] = "RECERR";
-      char reset[8] = "RESET";
-      char start[8] = "START";
+      const char none[5] = "NONE";
+      const char reset[4] = "RST";
+      const char get_response[4] = "GTR";
+      char* start = data.start;
       static const int incoming_buffer_length = 64;
       char incoming[incoming_buffer_length] = "";
       bool is_command(char* msg){
@@ -142,12 +176,6 @@ class Sound {
     public:
         const char start = "d=4,o=6,b=127:f,c#,f,c#";
 };
-
-class Flag {
-    public:
-        bool broadcast_data = false;          // Start up listening for start signal
-};
-Flag flag;
 
 class Time {
 public:
