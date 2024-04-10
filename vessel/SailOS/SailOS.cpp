@@ -29,7 +29,7 @@ void Boat::update(){
 }
 
 void Boat::read_data(){
-    radio.dataAdd(data_header);
+    radio.dataAdd(Default::data_header);
 }
 
 void Boat::broadcast_data(){
