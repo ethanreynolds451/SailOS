@@ -16,6 +16,7 @@ class Boat {
     void begin(int baud = Default::baud);
     void update();
   private:
+    void update_vehicle();
     void read_data();
     void broadcast_data();
 };

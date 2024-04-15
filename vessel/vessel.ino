@@ -4,7 +4,7 @@
 Boat boat;
 
 void setup(){
-  boat.begin();
+  boat.begin(28800);
 }
 
 void loop(){
